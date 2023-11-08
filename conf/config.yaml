@@ -1,0 +1,7 @@
+# Configuration for the data pipeline
+drugs_path: data/drugs.csv
+pubmed_path: data/pubmed.csv
+pubmed_json_path: data/pubmed.json
+clinical_trials_path: data/clinical_trials.csv
+output_json_path: data/drug_graph.json
+

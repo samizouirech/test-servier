@@ -1,0 +1,21 @@
+repos:
+-   repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 23.9.1
+    hooks:
+    - id: black
+-   repo: https://github.com/pycqa/flake8
+    rev: 6.1.0
+    hooks:
+    - id: flake8
+-   repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+    -   id: isort
+-   repo: https://github.com/econchick/interrogate
+    rev: 1.4.0  
+    hooks:
+      - id: interrogate
+        args:
+          - -vv
+          - --fail-under=80
+        # args: [--vv, -i, --fail-under=80]
