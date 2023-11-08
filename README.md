@@ -18,7 +18,7 @@ To set up the project environment and install the necessary dependencies using P
 1. Clone the repository:
 
     ```sh
-    git clone https://your-repository-url.com/servier_test/data-pipeline-project.git
+    git clone https://github.com/samizouirech/test-servier.git
     cd data-pipeline-project
     ```
 
