@@ -36,7 +36,7 @@ jobs:
 
     - name: Check output JSON file
       run: |
-        if [ -f "path/to/drug_graph.json" ]; then
+        if [ -f "data_output/drug_graph.json" ]; then
           echo "Output JSON file exists."
         else
           echo "Output JSON file does not exist."
