@@ -1,10 +1,10 @@
 import hydra
 from omegaconf import DictConfig
 
-from data_ingestion.data_ingestion import load_csv_data
-from data_output.data_output import write_graph_to_json
-from data_processing.data_processing import create_drug_graph
-from utils.utils import log
+from src.data_ingestion import load_csv_data
+from src.data_output import write_graph_to_json
+from src.data_processing import create_drug_graph
+from src.utils import log
 
 
 # Specify the version_base parameter and set hydra.job.chdir to False
