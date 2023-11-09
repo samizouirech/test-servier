@@ -8,8 +8,11 @@ This project is a Python-based data pipeline that processes datasets related to 
 
 - Python 3.11+
 - [Poetry](https://python-poetry.org/) for package management and dependency resolution.
-- Hydra for configuration management.
-- Pre-commit for code quality checks.
+- [Hydra](https://hydra.cc/) for configuration management.
+- [Pre-commit](https://pre-commit.com/) for code quality checks.
+- [Docker](https://www.docker.com/) for containerization and running Airflow.
+- [Supervisor](http://supervisord.org/) for process control (if not using Docker and Airflow).
+
 
 ## Installation
 
@@ -48,36 +51,54 @@ Hydra is used for configuration management. The configuration files are located 
 
 ## Running the Project
 
+### Using Python directly
+
 To run the data pipeline, ensure you are within the Poetry virtual environment and then execute the main script:
 
 ```sh
 python main.py
 ```
+### Using Docker with Airflow
+To run the pipeline using Airflow within Docker, follow these steps:
+
+1. Build the Docker image:
+
+```sh
+docker build -t data-pipeline-airflow .
+```
+2. Run the Airflow webserver (this command also initializes the database if it's the first run):
+
+```sh
+docker run -p 8080:8080 data-pipeline-airflow
+```
+After the webserver starts, visit http://localhost:8080 in your browser to access the Airflow UI.
+
+The Dockerfile should be set up to copy the DAG files into the container, install Airflow, and initialize the database.
+
+### Using Supervisor
+Run the pipeline managed by Supervisor, which will handle starting and stopping the Airflow webserver and scheduler:
+
+```sh
+supervisord -c supervisord.conf
+```
+
 
 ## Project Structure
-- main.py: The main script that orchestrates the data pipeline.
-- conf/: Directory containing configuration files for Hydra.
-- data_ingestion/: Module for loading data from various sources.
-- data_processing/: Module for processing and transforming data.
-- data_output/: Module for outputting data to files or databases.
-- utils/: Utility functions and classes used across the project.
-- data/: Directory containing input data files like drugs.csv, pubmed.csv, and clinical_trials.csv.
-- .pre-commit-config.yaml: Configuration file for pre-commit hooks.
+- main.py: Orchestrates the data pipeline execution.
+- pyproject.toml: Defines Python dependencies and project metadata for Poetry.
+- conf/: Contains configuration files managed by Hydra.
+- dags/: Contains Airflow DAG files defining the pipeline workflows.
+- src/: Source code for data ingestion, processing, and output modules.
+- data/: Input datasets for the data pipeline.
+- supervisord.conf: Configuration file for running the project with Supervisor.
+- .github/workflows/: CI/CD workflows for GitHub Actions.
+- .pre-commit-config.yaml: Configuration for pre-commit hooks.
+- Dockerfile: Instructions for building the Docker image for this project.
 
-## Data Ingestion
-The data_ingestion module is responsible for loading data from drugs.csv, pubmed.csv, clinical_trials.csv, and pubmed.json. It ensures that all entries from the JSON file have a valid id, merging the content of pubmed.csv and pubmed.json into one DataFrame.
-
-## Data Processing
-The data_processing module processes the ingested data to create a graph structure that connects drugs to PubMed articles and clinical trials based on mentions.
-
-## Data Output
-The data_output module writes the processed graph data structure to an output JSON file.
-
-## Utils
-The utils module contains helper functions like log for logging messages to the console.
-
+## Continuous Integration and Deployment
+The .github/workflows/ directory contains GitHub Actions workflows for continuous integration and deployment. These workflows automate testing, building, and deploying the project.
 
 ## Acknowledgments
-- Hydra for configuration management.
-- Pre-commit for automated code quality checks.
-- Poetry for Python packaging and dependency management
+Hydra for configuration management.
+Pre-commit for automated code quality checks.
+Poetry for Python packaging and dependency management.
