@@ -1,0 +1,48 @@
+name: Python application CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Cache Poetry virtualenv
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pypoetry/virtualenv
+        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-poetry-
+
+    - name: Install dependencies
+      run: |
+        pip install poetry
+        poetry config virtualenvs.create false
+        poetry install --no-dev
+
+    - name: Run the main application
+      run: python main.py
+
+    - name: Check output JSON file
+      run: |
+        if [ -f "path/to/drug_graph.json" ]; then
+          echo "Output JSON file exists."
+        else
+          echo "Output JSON file does not exist."
+          exit 1
+        fi
+
+    # Uncomment and update the following if you have tests
+    # - name: Run tests
+    #   run: poetry run pytest
